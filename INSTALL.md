@@ -1,13 +1,8 @@
 # Installation instructions
 
 ## Paths for future reference
-  * `/<root-dir>/`: The filesystem path where eZ Platform is installed in
-
+  * `/<root-dir>/`: The filesystem path where eZ Platform is installed in.
     Examples: `/home/myuser/www/` or `/var/sites/<project-name>/`
-
-  * `/<root-dir>/web/`: A directory meant to be the **DocumentRoot** of the eZ Platform installation (`<root-dir>` is not supposed to be _readable_ from web server perspective)
-
-    Examples: `/home/myuser/www/web/` or `/var/sites/<project-name>/web/`
 
 ## Prerequisite
 
@@ -17,7 +12,7 @@
 
 ## Install
 
-0. **Create an empty database**, and optionally setup Solr
+1. **Create an empty database**, and optionally setup Solr
 
     The following step will ask you for credentials/details for which database to use, so make sure to create one first.
 
@@ -25,7 +20,7 @@
 
     *Note: Right now installer only supports MySQL, Postgres support should be (re)added in one of the upcoming releases.*
 
-1. **Get eZ Platform**:
+2. **Get eZ Platform**:
 
     There are two ways to install eZ Platform described below, what is common is that you should make sure
     relevant settings are generated into `ezpublish/config/parameters.yml` as a result of this step.
@@ -66,67 +61,38 @@
        - For core development: Add '--prefer-source' to get full git clones, and remove '--no-dev' to get things like phpunit and behat installed.
        - Further reading: https://getcomposer.org/doc/03-cli.md#create-project
 
-2. *Only for *NIX users* **Setup folder rights**:
+3. *Only for *NIX/OS X users* **Setup folder rights**:
 
-       *Skip to step #3 if you plan to install LegacyBridge and eZ Publish Legacy with this installation!*
+       *Skip to step #4 if you plan to install LegacyBridge and eZ Publish Legacy with this installation.*
 
-       One common issue is that the `ezpublish/cache`, `ezpublish/logs` and `ezpublish/config` directories **must be writable both by the web server and the command line user**.
-       If your web server user is different from your command line user, you can run the following commands just once in your project to ensure that permissions will be set up properly.
+       One common issue is that the `ezpublish/{cache,logs,sessions},` directories **must be writable both by the web server and the command line user**.
+       To make sure both have access, you can run the following commands in your `<root-dir>` to ensure that permissions will be set up properly.
 
-       Change `www-data` to your web server user:
-
-       A. **Using ACL on a system that supports chmod +a**
+       In the example below, replace `www-data` with your web server user.
 
        ```bash
-       $ rm -rf ezpublish/cache/* ezpublish/logs/* ezpublish/sessions/*
-       $ sudo chmod +a "www-data allow delete,write,append,file_inherit,directory_inherit" \
-         ezpublish/{cache,logs,config,sessions} web
-       $ sudo chmod +a "`whoami` allow delete,write,append,file_inherit,directory_inherit" \
-         ezpublish/{cache,logs,config,sessions} web
+       $ chown -R www-data ezpublish/{cache,logs,sessions}
+       $ chmod -R ug+rwX ezpublish/{cache,logs,sessions}
        ```
 
-       B. **Using ACL on a system that does not support chmod +a**
+       Note: *User group is on purpose not specified as it is assumed this is set to current command line users group that will continue to need access.
+       To make this work flawlessly you'll need to add web server user group as primary group to your command line user, to make sure it has access to files created by web user and vica-versa.*
 
-       Some systems don't support chmod +a, but do support another utility called setfacl. You may need to enable ACL support on your partition and install setfacl before using it (as is the case with Ubuntu), like so:
+       Note2: *On Linux it is also possible to use ACL to setup more advance rights if you are more comfortable using that.*
 
-       ```bash
-       $ sudo setfacl -R -m u:www-data:rwx -m u:www-data:rwx \
-         ezpublish/{cache,logs,config,sessions} web
-       $ sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx \
-         ezpublish/{cache,logs,config,sessions} web
-       ```
-
-       C. **Using chown on systems that don't support ACL**
-
-       Some systems don't support ACL at all. You will either need to set your web server's user as the owner of the required directories.
-
-       ```bash
-       $ sudo chown -R www-data:www-data ezpublish/{cache,logs,config,sessions} web
-       $ sudo find {ezpublish/{cache,logs,config,sessions},web} -type d | xargs sudo chmod -R 775
-       $ sudo find {ezpublish/{cache,logs,config},web} -type f | xargs sudo chmod -R 664
-       ```
-
-       D. **Using chmod**
-
-       If you can't use ACL and aren't allowed to change owner, you can use chmod, making the files writable by everybody. Note that this method really isn't recommended as it allows any user to do anything.
-
-       ```bash
-       $ sudo find {ezpublish/{cache,logs,config,sessions},web} -type d | xargs sudo chmod -R 777
-       $ sudo find {ezpublish/{cache,logs,config,sessions},web} -type f | xargs sudo chmod -R 666
-       ```
-3. *Optional* **Install LegacyBridge and eZ Publish Legacy**:
+4. *Optional* **Install LegacyBridge and eZ Publish Legacy**:
 
     eZ Platform, unlike eZ Publish 5.x, does not come with eZ Publish Legacy (the updated version of eZ Publish 4.x).
     For the time being it is still possible to run Legacy side by side with eZ Platform, further instructions here:
     https://doc.ez.no/display/EZP/Installing+eZ+Publish+Legacy+on+top+of+eZ+Platform
 
-4. **Configure a VirtualHost**:
+5. **Configure a VirtualHost**:
 
     A virtual host setup is the recommended, most secure setup of eZ Publish.
     General virtual host setup template for Apache and Nginx can be found in [doc/ folder](doc/).
 
 
-5. **Run installation command**:
+6. **Run installation command**:
 
     You may now complete the eZ Platform installation with ezplatform:install command, example of use:
 
