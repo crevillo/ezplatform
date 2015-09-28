@@ -13,6 +13,7 @@ env:
   - PROFILE="demo" TEST="clean"
   - PROFILE="rest" TEST="fullJson"
   - PROFILE="rest" TEST="fullXml"
+  - PROFILE="platformui" TEST="standard"
 
 
 # test only master (+ Pull requests)
