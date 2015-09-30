@@ -3,9 +3,9 @@ language: php
 # We do Behat testing here, lots of sudo going on
 sudo: required
 
-# run tests on php 5.5 only and let unit / integration tests deal with php differences
+# run tests on php 7.0 only and let unit / integration tests deal with php differences
 php:
-  - 5.5
+  - 7.0
 
 # list of paths/bundle to execute
 env:
