@@ -7,6 +7,10 @@ sudo: required
 php:
   - 7.0
 
+# Use latests Firefox version to match what we support and faster execution
+addons:
+  firefox: "latest"
+
 # list of paths/bundle to execute
 env:
   - INSTALL="demoContentNonUniqueDB" PROFILE="demo" TEST="content"
