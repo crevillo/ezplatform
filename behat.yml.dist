@@ -38,16 +38,8 @@ platformui:
                   - EzSystems\PlatformUIBundle\Features\Context\PlatformUI:
                       uri: /ez
 
-core:
-    suites:
-        console:
-            paths: [ vendor/ezsystems/ezpublish-kernel/eZ/Bundle/EzPublishCoreBundle/Features/Console]
-            contexts: [ eZ\Bundle\EzPublishCoreBundle\Features\Context\ConsoleContext ]
-        # Web features (controllers, default templates, rendering features...)
-        web:
-            paths: [ vendor/ezsystems/ezpublish-kernel/eZ/Bundle/EzPublishCoreBundle/Features/Content]
-            contexts: [ eZ\Bundle\EzPublishCoreBundle\Features\Context\ContentPreviewContext ]
-
+imports:
+    - vendor/ezsystems/ezpublish-kernel/eZ/Bundles/EzPublishCoreBundle/behat.yml
 
 rest:
     suites:
