@@ -39,7 +39,7 @@ platformui:
                       uri: /ez
 
 imports:
-    - vendor/ezsystems/ezpublish-kernel/eZ/Bundles/EzPublishCoreBundle/behat.yml
+    - vendor/ezsystems/ezpublish-kernel/eZ/Bundle/EzPublishCoreBundle/behat.yml
 
 rest:
     suites:
